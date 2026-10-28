@@ -1,0 +1,17 @@
+% Run from the project root: xelatex -output-directory=tests tests/layout_check.tex
+% Run twice. Expect two pages, a header on page 1, and a watermark on both.
+\documentclass[12pt]{QHUletter}
+\name{Template Check Author}
+\date{October 28, 2026}
+% Deliberately omit address, signature, and subject to check their empty paths.
+\begin{document}
+\begin{letter}{Test Editor}
+\opening{Dear Editor,}
+This page checks the first-page letterhead, an empty sender address,
+and an omitted subject. The date and recipient must remain visible.
+\newpage
+This page checks that the watermark repeats and that the letterhead does
+not repeat. The closing below must use the name as its signature fallback.
+\closing{Sincerely,}
+\end{letter}
+\end{document}
