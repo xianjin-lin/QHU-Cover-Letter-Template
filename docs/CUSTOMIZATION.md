@@ -15,7 +15,7 @@
 | 调整项目 | 当前设置 | 修改方式 |
 | --- | --- | --- |
 | 正文字号 | `12pt` | 修改 `\documentclass[12pt]{QHUletter}`，可选 `10pt`、`11pt` 或 `12pt` |
-| 背景不透明度 | `0.15` | 重定义 `\watermarkopacity` |
+| 背景不透明度 | `0.025` | 重定义 `\watermarkopacity` |
 | 背景校徽宽度 | `105mm` | 重定义 `\watermarkwidth` |
 | 纸张与页边距 | US Letter，左右分别为 19.05、22.225 mm | 使用 `\geometry{...}` |
 | 段间距 | `0.7em` | 使用 `\setlength{\parskip}{...}` |
@@ -23,7 +23,7 @@
 <strong>调整背景大小和透明程度：</strong>在导言区加入：
 
 ```latex
-\renewcommand{\watermarkopacity}{0.08}
+\renewcommand{\watermarkopacity}{0.015}
 \renewcommand{\watermarkwidth}{100mm}
 ```
 
@@ -63,7 +63,7 @@
 | 地址宽度 | `text width=70mm` | 地址文字的排版宽度 |
 | 地址字体 | `\fontsize{10}{12}` | 字号 10 pt、行距 12 pt |
 | 竖线横向位置 | `xshift=121mm` | 距页面左边 121 mm |
-| 竖线起止位置 | `yshift=-8mm` 和 `yshift=-58mm` | 距页面上边 8 mm 到 58 mm |
+| 竖线起止位置 | `yshift=-8mm` 和 `yshift=-50mm` | 距页面上边 8 mm 到 50 mm |
 
 定位基准均为页面<strong>左上角</strong>。`xshift` 增大表示向右移动；`yshift` 越负，表示越向下移动。
 
@@ -85,7 +85,9 @@
 
 在 `QHUletter.cls` 中：
 
-- `\opening` 定义内的 `\vspace{1.5\baselineskip}` 控制日期之后的额外留白。
+- `\date{...}` 设置日期，自动显示在右侧联系信息下方；`\date{}` 隐藏日期。无需在 `\address` 中重复填写日期。
+- 地址和日期之间的 `\vspace{4pt}` 控制右侧联系信息与日期之间的留白。
+- `\opening` 定义内的 `\vspace{1.5\baselineskip}` 控制正文开头的额外留白。
 - `\closing` 定义内的 `\vspace{1.5\baselineskip}` 控制落款之前的额外留白。
 - `\closing` 定义内的 `\\[0.5\medskipamount]` 控制结束语与签名之间的额外留白。
 
@@ -129,7 +131,7 @@
 | 编译了检查样例 | 将主文件设回 `main.tex`，不要选择 `tests/layout_check.tex` |
 | 修改后预览没有变化 | 保存并重新编译，确认编辑的是当前项目中的 `main.tex` |
 | 地址换行过多或与日期重叠 | 缩短单位名称、减少行数，或调整地址字体和位置 |
-| 背景影响阅读 | 减小 `\watermarkopacity`，例如改为 `0.08` |
+| 背景影响阅读 | 减小 `\watermarkopacity`，例如改为 `0.015` |
 | 落款到了第二页 | 优先精简正文或小幅减小段间距，再检查字号和页边距 |
 | 中文正文显示异常 | 当前模板用于英文投稿信，未配置中文排版；使用中文需另行配置中文支持 |
 
@@ -173,7 +175,9 @@ xelatex -no-shell-escape -halt-on-error -output-directory=tests tests/layout_che
 
 打开生成的 `tests/layout_check.pdf`：第一页应有信头和背景，第二页应保留背景且不重复信头；同时检查文字、日期和落款是否完整。
 
-当前版本于 <strong>2026-10-28</strong> 完成以下检查：
+<strong>2026-11-08 版式更新：</strong>背景不透明度为 `0.025`，日期自动位于右侧联系信息下方。单页模板和两页检查样例已用 Tectonic（XeTeX）重新编译并逐页检查，无文字溢出或缺字；本次未重新测试 pdfLaTeX 或 LuaLaTeX。
+
+原始版本于 <strong>2026-10-28</strong> 完成以下检查：
 
 - XeLaTeX、pdfLaTeX、LuaLaTeX 均成功编译单页模板，最终日志无警告和文字溢出提示。
 - XeLaTeX 两页样例编译通过，已检查实际渲染。

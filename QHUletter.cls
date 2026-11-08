@@ -3,7 +3,7 @@
 % brownletter.cls, Copyright 2003 Nesime Tatbul.
 % Earlier adaptations: Brian Wood, Luyi Li, MincooLee, and Zain Chen.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{QHUletter}[2026/10/28 Qinghai University cover letter]
+\ProvidesClass{QHUletter}[2026/11/08 Qinghai University cover letter]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{letter}}
 \ProcessOptions\relax
 \LoadClass[letterpaper]{letter}
@@ -22,13 +22,19 @@
 \let\@texttop\relax
 
 % The supplied background is square: preserve its proportions.
-\newcommand{\watermarkopacity}{0.15}
+\newcommand{\watermarkopacity}{0.025}
 \newcommand{\watermarkwidth}{105mm}
 \AddToShipoutPictureBG{%
-  \begin{tikzpicture}[remember picture,overlay]
-    \node[inner sep=0pt,opacity=\watermarkopacity] at (current page.center)
-      {\includegraphics[width=\watermarkwidth]{qhu.pdf}};
-  \end{tikzpicture}%
+  \AtPageCenter{%
+    \makebox(0,0){%
+      \begin{tikzpicture}
+        \begin{scope}[transparency group,opacity=\watermarkopacity]
+          \node[inner sep=0pt]
+            {\includegraphics[width=\watermarkwidth]{qhu.pdf}};
+        \end{scope}
+      \end{tikzpicture}%
+    }%
+  }%
 }
 
 \newcommand{\subjectname}{Subject}
@@ -47,13 +53,16 @@
       \node[anchor=north west,inner sep=0pt,text width=70mm,
             align=left,font=\fontsize{10}{12}\selectfont]
         at ([xshift=127mm,yshift=-18mm]current page.north west)
-        {\fromaddress};
+        {\fromaddress
+          \ifx\@date\@empty\else
+            \ifx\fromaddress\@empty\else\par\vspace{4pt}\fi
+            \textbf{\color{qhublue}Date}: \@date
+          \fi};
       \draw[black,line width=0.4pt]
         ([xshift=121mm,yshift=-8mm]current page.north west) --
-        ([xshift=121mm,yshift=-58mm]current page.north west);
+        ([xshift=121mm,yshift=-50mm]current page.north west);
     \end{tikzpicture}%
   }%
-  {\raggedright\@date\par}%
   \vspace{1.5\baselineskip}%
   \ifx\toname\QHU@emptyrecipient\else
     {\raggedright\toname
